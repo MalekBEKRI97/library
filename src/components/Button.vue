@@ -1,6 +1,8 @@
 <template>
   <div class="button">
-    <button class="without-link">click me</button>
+    <button class="without-link">
+      <slot></slot>
+    </button>
   </div>
 </template>
 
@@ -13,10 +15,13 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .without-link {
-  border:none;
+
+  outline: none;
+  border: none;
+  box-sizing: border-box;
   background-color: #f15458;
   font-size: 17px;
-  padding: 5px 30px;
+  padding: 6px 30px;
   border-radius: 50px;
   color: white;
   cursor: pointer;

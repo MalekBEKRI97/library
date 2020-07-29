@@ -1,11 +1,12 @@
 <template>
   <div class="button">
-    <a class="with-link">click me</a>
+    <a class="with-link">{{ btnTexte }}</a>
   </div>
 </template>
 
 <script>
 export default {
+  props: ['btnTexte'],
   name: 'ButtonWithLink',
 };
 </script>
