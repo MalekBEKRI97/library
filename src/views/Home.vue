@@ -1,17 +1,12 @@
 <template>
   <div class="home">
-    <ButtonWithLink :btnTexte="btnTexte" />
-    <br>
-    <br>
-    <Button>press here</Button>
-
+    <Button size="30" color="black" backColor="green" toLink="http://www.google.com">press here</Button>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import Button from '@/components/Button.vue';
-import ButtonWithLink from '@/components/ButtonWithLink.vue';
 
 export default {
   data() {
@@ -22,7 +17,6 @@ export default {
   name: 'Home',
   components: {
     Button,
-    ButtonWithLink,
   },
 };
 </script>
