@@ -3,7 +3,6 @@
     <button class="btn" :style="cssProp" @click="goTo">
       <slot></slot>
     </button >
-
   </div>
 </template>
 
