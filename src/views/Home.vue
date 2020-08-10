@@ -6,6 +6,8 @@
     <Contact mail="malekbekri97@gmail.com" phone="52827123"  adress="Ben Arous"></Contact>
     <br/>
     <OpenningHours :days="days" :key="id"></OpenningHours>
+    <br/>
+    <DatePicker></DatePicker>
   </div>
 </template>
 
@@ -14,6 +16,7 @@
 // import Button from '@/components/Button.vue';
 import Contact from '@/components/Contact.vue';
 import OpenningHours from '@/components/OpenningHours.vue';
+import DatePicker from '@/components/DatePicker.vue';
 
 export default {
   data() {
@@ -26,6 +29,7 @@ export default {
     // Button,
     Contact,
     OpenningHours,
+    DatePicker,
   },
 };
 </script>
