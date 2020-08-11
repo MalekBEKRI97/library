@@ -2,44 +2,15 @@
   <div class="datePicker">
     <h2>Choisir la date et l'heure du rendez-vous</h2>
     <div class="date">
-      <h3>Aout 2020</h3>
+      <h3>{{months[date.getMonth()]+' '+date.getFullYear()}}</h3>
       <suivant fillColor="#2b78aa" :size="50" />
     </div>
     <div class="weekDays">
-      <div>
-        <div>Mer</div>
-        <div>05</div>
-        <div>Aout</div>
-      </div>
-      <div>
-        <div>Jeu</div>
-        <div>06</div>
-        <div>Aout</div>
-      </div>
-      <div>
-        <div>Ven</div>
-        <div>07</div>
-        <div>Aout</div>
-      </div>
-      <div>
-        <div>Sam</div>
-        <div>08</div>
-        <div>Aout</div>
-      </div>
-      <div>
-        <div>Dim</div>
-        <div>09</div>
-        <div>Aout</div>
-      </div>
-      <div>
-        <div>Lun</div>
-        <div>10</div>
-        <div>Aout</div>
-      </div>
-      <div>
-        <div>Mar</div>
-        <div>11</div>
-        <div>Aout</div>
+      <div v-for="day in generatedDays" :key="day" >
+        <div v-if="day[0] === 'Sam' || day[0] === 'Dim'" :style="cssProp">{{day[0]}}</div>
+        <div v-else>{{day[0]}}</div>
+        <div>{{day[1]}}</div>
+        <div>{{day[2]}}</div>
       </div>
     </div>
     <div class="hours">
@@ -83,9 +54,45 @@
 import suivant from 'vue-material-design-icons/ArrowRightBox.vue';
 
 export default {
+  data() {
+    return {
+      date: new Date(),
+      months: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'May', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novombre', 'Decembre'],
+      days: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+    };
+  },
   name: 'DatePicker',
   components: {
     suivant,
+  },
+  computed: {
+    generatedDays() {
+      let currentDay = this.date.getDay() - 1;
+      let currentDate = this.date.getDate();
+      let currentmonth = this.date.getMonth();
+      const daysGenerated = [];
+      for (let i = 0; i < 7; i += 1) {
+        daysGenerated[i] = [];
+      }
+      for (let i = 0; i < 7; i += 1) {
+        if (currentDate === 32) {
+          currentDate = 1;
+          currentmonth += 1;
+        }
+        if (currentDay === 7) {
+          currentDay = 0;
+        }
+        daysGenerated[i][0] = this.days[currentDay];
+        daysGenerated[i][1] = currentDate;
+        daysGenerated[i][2] = this.months[currentmonth];
+        currentDay += 1;
+        currentDate += 1;
+      }
+      return daysGenerated;
+    },
+    cssProp() {
+      return 'background-color: #f2dede;border-color:red;';
+    },
   },
 };
 </script>
@@ -109,6 +116,7 @@ export default {
   justify-content: space-around;
   margin-right:7px;
   margin-top: 5px;
+
 }
 .weekDays > div {
   width: 5rem;
