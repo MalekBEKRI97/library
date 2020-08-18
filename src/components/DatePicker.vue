@@ -3,49 +3,21 @@
     <h2>Choisir la date et l'heure du rendez-vous</h2>
     <div class="date">
       <h3>{{months[date.getMonth()]+' '+date.getFullYear()}}</h3>
-      <suivant fillColor="#2b78aa" :size="50" />
+      <suivant fillColor="#2b78aa" :size="50" @click="addWeek"/>
     </div>
-    <div class="weekDays">
-      <div v-for="day in generatedDays" :key="day" >
-        <div v-if="day[0] === 'Sam' || day[0] === 'Dim'" :style="cssProp">{{day[0]}}</div>
-        <div v-else>{{day[0]}}</div>
+    <div class="weekDays" >
+      <div v-for="(day,i) in generatedDays" :key="i" :class="[{'check':i === activeItem} , {'weekend' : day[0] === 'Sam' || day[0] === 'Dim'}]" @click="selectItem(i)">
+        <div>
+          {{day[0]}}
+        </div>
         <div>{{day[1]}}</div>
         <div>{{day[2]}}</div>
       </div>
     </div>
     <div class="hours">
-      <div>08:00</div>
-      <div>08:15</div>
-      <div>08:30</div>
-      <div>08:45</div>
-      <div>09:00</div>
-      <div>09:15</div>
-      <div>09:30</div>
-      <div>09:45</div>
-      <div>10:00</div>
-      <div>10:15</div>
-      <div>10:30</div>
-      <div>10:45</div>
-      <div>11:00</div>
-      <div>11:15</div>
-      <div>11:30</div>
-      <div>11:45</div>
-      <div>12:00</div>
-      <div>12:15</div>
-      <div>12:30</div>
-      <div>12:45</div>
-      <div>13:00</div>
-      <div>13:15</div>
-      <div>13:30</div>
-      <div>13:45</div>
-      <div>14:00</div>
-      <div>14:15</div>
-      <div>14:30</div>
-      <div>14:45</div>
-      <div>15:00</div>
-      <div>15:15</div>
-      <div>15:30</div>
-      <div>15:45</div>
+      <div v-for="time in times" :key="time">
+        {{time[0] + ' : ' + time[1]}}
+      </div>
     </div>
   </div>
 </template>
@@ -59,6 +31,7 @@ export default {
       date: new Date(),
       months: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'May', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novombre', 'Decembre'],
       days: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+      activeItem: null,
     };
   },
   name: 'DatePicker',
@@ -85,14 +58,56 @@ export default {
         daysGenerated[i][0] = this.days[currentDay];
         daysGenerated[i][1] = currentDate;
         daysGenerated[i][2] = this.months[currentmonth];
+        // if( (daysGenerated[i][0] == 'Dim') || (daysGenerated[i][0] == 'Sam'))
+
         currentDay += 1;
         currentDate += 1;
       }
       return daysGenerated;
     },
-    cssProp() {
-      return 'background-color: #f2dede;border-color:red;';
+    times() {
+      const tabTimes = [];
+      for (let i = 0; i < 32; i += 1) {
+        tabTimes[i] = [];
+      }
+      let h = 8;
+      let m = 0;
+      for (let i = 0; i < 32; i += 1) {
+        if (m === 60) {
+          m = 0;
+          h += 1;
+        }
+        if (Math.floor(h / 10) !== 0) {
+          tabTimes[i][0] = h.toString();
+        } else {
+          tabTimes[i][0] = `0${h.toString()}`;
+        }
+        if (Math.floor(m / 10) !== 0) {
+          tabTimes[i][1] = m.toString();
+        } else {
+          tabTimes[i][1] = `0${m.toString()}`;
+        }
+        m += 15;
+      }
+      return tabTimes;
     },
+    change() {
+      this.verifyWeekend = true;
+      return this.verifyWeekend;
+    }
+  },
+  methods: {
+    selectItem(i) {
+      if (this.activeItem === null){
+        this.activeItem = i;
+      } else {
+        this.activeItem = null;
+      }
+    },
+    addWeek(){
+      this.date = new Date(this.date.getFullYear(),this.date.getMonth(),this.date.getDate()+7);
+      generatedDays;
+    }
   },
 };
 </script>
@@ -116,9 +131,9 @@ export default {
   justify-content: space-around;
   margin-right:7px;
   margin-top: 5px;
-
 }
 .weekDays > div {
+  cursor: pointer;
   width: 5rem;
   height: 4rem;
   background-color: #f5f5f5;
@@ -132,6 +147,15 @@ export default {
   border-radius :5px ;
   font-size: 14px;
   color: #938f8f;
+}
+.check{
+  background-color: #19aa96 !important;
+  color:white !important;
+}
+.weekend{
+  background-color: #f2dede !important;
+  border: 1px solid red !important;
+  color: #938f8f !important;
 }
 .weekDays > div > div:nth-child(2){
   font-weight: bolder;
